@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native'
 import flashMessage from '../../../common/CustomFlashAlert'
 import RegularText from '../../../common/RegularText'
 import CommonButton from '../../../common/buttons/CommonButton'
@@ -56,9 +56,12 @@ const LoginScreen = () => {
             const isPasswordValidation = isInputEmpty(password)
 
             if (!isEmailValidation.success) setEmailError(isEmailValidation.msg); else setEmailError('')
-            if (!isPasswordValidation.success) setPasswordError(''); else setPasswordError('')
+            if (!isPasswordValidation.success) setPasswordError('Please enter password'); else setPasswordError('')
 
-            if (!isEmailValidation.success || !isPasswordValidation.success) return
+            if (!isEmailValidation.success || !isPasswordValidation.success) {
+                setIsButtonLoading(false)
+                return
+            }
 
             await onLoginSignupSuccess()
         }
@@ -78,7 +81,7 @@ const LoginScreen = () => {
                     {
                         !isKeyBoardVisible &&
                         <View style={styles.imageContainer} >
-                            <Image source={Images.IMG_LOGIN_BANNER} />
+                            <Image source={Images.IMG_LOGIN_BANNER} style={styles.banner} />
                         </View>
                     }
                     <View style={styles.inputContainer} >
@@ -99,7 +102,7 @@ const LoginScreen = () => {
                     <CommonButton
                         title={'Signin'}
                         fetching={isButtonLoading}
-                        marginTop={spacing.MARGIN_16}
+                        marginTop={spacing.MARGIN_10}
                         onPressButton={() => onPressSignin()}
                     />
                     <View style={styles.otherBtnContainer} >
@@ -123,25 +126,25 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.appBackgroundColor,
         paddingHorizontal: APP_PADDING_HORIZONTAL,
-        paddingBottom: spacing.PADDING_30
     },
     welcomeText: {
         fontSize: textScale(18),
         fontFamily: fontNames.OPEN_SANS_BOLD,
-        marginTop: spacing.MARGIN_40
+        marginTop: '5%',
     },
     toAppText: {
         fontSize: textScale(12),
         fontFamily: fontNames.OPEN_SANS_REGULAR,
-        marginBottom: spacing.MARGIN_20
+        marginBottom: '5%'
     },
     imageContainer: {
         justifyContent: "center",
         alignSelf: 'center',
-        // marginVertical: '5%',
+    },
+    banner: {
     },
     inputContainer: {
-        marginTop: spacing.MARGIN_20
+        // marginTop: '5%'
     },
     agencyCheckBoxContainer: {
 
@@ -153,7 +156,8 @@ const styles = StyleSheet.create({
     },
     forgotBtn_text: {
         color: colors.grey600,
-        paddingVertical: spacing.PADDING_6
+        paddingVertical: spacing.PADDING_6,
+        fontSize: textScale(14)
     },
     registerText: {
         fontSize: textScale(14),
@@ -164,7 +168,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: textScale(10),
         fontFamily: fontNames.OPEN_SANS_SEMI_BOLD,
-        color: colors.grey600
+        color: colors.grey600,
+        paddingVertical: '2%'
     },
     termsAndConditionText_bold: {
         fontFamily: fontNames.OPEN_SANS_SEMI_BOLD,

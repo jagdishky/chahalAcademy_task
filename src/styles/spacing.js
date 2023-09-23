@@ -2,7 +2,7 @@ import { Dimensions } from 'react-native';
 import { moderateScale, moderateScaleVertical, scale, verticalScale } from './responsiveStyles';
 
 const { height, width } = Dimensions.get("window")
-const { screenHeight, screenWidth } = Dimensions.get("screen")
+const { height: screenHeight, width: screenWidth } = Dimensions.get("screen")
 
 export const spacing = {
     PADDING_2: moderateScale(2),

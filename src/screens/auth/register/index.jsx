@@ -55,7 +55,10 @@ const RegisterScreen = () => {
             if (!passwordValidation.success) setPasswordError(passwordValidation.msg); else setPasswordError('')
             if (!confirmPasswordValidation.success) setConfirmPasswordError(confirmPasswordValidation.msg); else setConfirmPasswordError('')
 
-            if (!emailValidation.success || !passwordValidation.success || !confirmPasswordValidation.success) return
+            if (!emailValidation.success || !passwordValidation.success || !confirmPasswordValidation.success) {
+                setIsButtonLoading(false)
+                return
+            }
 
             await onLoginSignupSuccess()
         } catch (err) {
@@ -66,7 +69,7 @@ const RegisterScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }} >
-            <ScrollView style={styles.mainContainer} >
+            <ScrollView style={styles.mainContainer}  >
                 <TouchableOpacity onPress={goBack} style={{ alignSelf: 'flex-start', borderWidth: 0 }}  >
                     <Image source={Images.IMG_ARROW_RIGHT} style={styles.backIcon} />
                 </TouchableOpacity>
@@ -99,18 +102,16 @@ const RegisterScreen = () => {
 
                 <CommonButton
                     title={'Sign up'}
-                    marginTop={spacing.MARGIN_16}
+                    marginTop={spacing.MARGIN_6}
                     onPressButton={onPressSignup}
                     fetching={isButtonLoading}
                 />
-                <View style={{ flex: 1 }} />
-
+                {
+                    !isKeyBoardVisible &&
+                    <RegularText style={styles.termsAndConditionText} >{"By signing up, you agree to App"} <RegularText style={styles.termsAndConditionText_bold} >{'terms and condition'}</RegularText></RegularText>
+                }
             </ScrollView>
-            {
-                !isKeyBoardVisible &&
-                <RegularText style={styles.termsAndConditionText} >{"By signing up, you agree to App"} <RegularText style={styles.termsAndConditionText_bold} >{'terms and condition'}</RegularText></RegularText>
-            }
-            {/* </KeyboardAvoidingView> */}
+
         </SafeAreaView>
     )
 }
@@ -131,9 +132,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: textScale(14),
-        fontWeight: 800,
-        fontFamily: fontNames.OPEN_SANS_MEDIUM,
-        marginBottom: spacing.MARGIN_12
+        fontFamily: fontNames.OPEN_SANS_BOLD,
+        marginBottom: '2%'
     },
     termsAndConditionText: {
         textAlign: 'center',
